@@ -40,7 +40,7 @@ int server::StartRecv()
     int client_sockfd = accept(sockfd, (struct sockaddr*)(&clientAddr), &clientLen);
     if (client_sockfd == -1) {
         perror("accept");
-        return -1;
+        return 1;
     }
     
     cout<<"Accepted connection from "<<inet_ntoa(clientAddr.sin_addr)<<endl;
@@ -61,7 +61,7 @@ int server::StartRecv()
         perror("recv");
         close(client_sockfd);
         this->Close();
-        return -1;
+        return 1;
     }
     
     auto end_time = chrono::high_resolution_clock::now();
@@ -70,7 +70,7 @@ int server::StartRecv()
     this->Mbps = this->recvKB*8/1000/(duration/1000.0);
     close(client_sockfd);
     
-    return 1;
+    return 0;
 }
 
 void server::Close()

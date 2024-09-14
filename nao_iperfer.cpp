@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     if(argc<4)
     {
         cout<<"Error: missing or additional arguments"<<endl;
-        return 0;
+        return 1;
     }
     string mode=argv[1];
     string serverIP="";
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     if(!((mode=="-c" && argc==8)||(mode=="-s" && argc==4)))
     {
         cout<<"Error: missing or additional arguments"<<endl;
-        return 0;
+        return 1;
     }
 
     int argCount=2;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     if(port<1024 || port>65535)
     {
         cout<<"Error: port number must be in the range 1024 to 65535"<<endl;
-        return 0;
+        return 1;
     }
     
     if(mode=="-c"){

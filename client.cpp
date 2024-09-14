@@ -7,7 +7,7 @@ client::client(string serverIP, int port, int time):serverIP(serverIP), port(por
     this->sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (this->sockfd == -1) {
         perror("socket");
-        return;
+        return 1;
     }
     
     sockaddr_in server_addr;
@@ -16,13 +16,13 @@ client::client(string serverIP, int port, int time):serverIP(serverIP), port(por
     if (inet_pton(AF_INET, serverIP.c_str(), &server_addr.sin_addr) <= 0) {
         perror("inet_pton");
         close(sockfd);
-        return;
+        return 1;
     }
 
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
         perror("connect");
         close(sockfd);
-        return;
+        return 1;
     }
     
     cout<<"Connected"<<endl;
@@ -43,7 +43,7 @@ int client::StartSend()
         {
             perror("send");
             this->Close();
-            return -1;
+            return 1;
         }
         this->sentKB += bytes_sent/1000.0;
         end_time = chrono::high_resolution_clock::now();
@@ -51,7 +51,7 @@ int client::StartSend()
     }
     this->Mbps = this->sentKB*8/1000/(duration/1000.0);
     
-    return 1;
+    return 0;
 }
 
 void client::Close()
