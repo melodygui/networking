@@ -7,7 +7,7 @@ client::client(string serverIP, int port, int time):serverIP(serverIP), port(por
     this->sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (this->sockfd == -1) {
         perror("socket");
-        return 1;
+        return;
     }
     
     sockaddr_in server_addr;
@@ -16,13 +16,13 @@ client::client(string serverIP, int port, int time):serverIP(serverIP), port(por
     if (inet_pton(AF_INET, serverIP.c_str(), &server_addr.sin_addr) <= 0) {
         perror("inet_pton");
         close(sockfd);
-        return 1;
+        return;
     }
 
     if (connect(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
         perror("connect");
         close(sockfd);
-        return 1;
+        return;
     }
     
     cout<<"Connected"<<endl;
